@@ -21,7 +21,7 @@ from typing import List
 
 def binary_search(arr: List[int], x: int, left: int, right: int) -> int:
     if right <= left: # промежуток пуст
-        return left
+        return right
     # промежуток не пуст
     mid = (left + right) // 2
     if arr[mid] == x: # центральный элемент — искомый
@@ -35,12 +35,14 @@ def binary_search(arr: List[int], x: int, left: int, right: int) -> int:
 def find_first_day(arr, val) -> int:
     if val > arr[-1]:
         return -1
+    if val in arr:
+        return arr.index(val) + 1
     return binary_search(arr, val, 0, len(arr)) + 1
 
 
 def main():
     count_days = int(input())
-    days = list(map(int, input().split()))
+    days = tuple(map(int, input().split()))
     cost = int(input())
     answer_1 = find_first_day(days, cost)
     answer_2 = find_first_day(days, cost * 2)
