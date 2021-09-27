@@ -1,46 +1,73 @@
 def broken_search(nums, target) -> int:
-    #  Your code
-    #  “ヽ(´▽｀)ノ”
-    
+    from typing import List
+    """Бинарный поиск в 'сломанном' списке.
+
+    Args:
+        nums (List): массив, бывший отсортированным в кольцевой структуре
+        target ([type]): искомый эл-т
+    Returns:
+        int: индекс искомого эл-та, или -1 если не найден
+    Алгоритм поиска:
+        Массив делится на две части посередине.
+        Одна точно должна быть упорядоченна. Могут быть обе, если деление
+        попало на 'ступеньку'.
+        Если часть отсортирована, легко проверяется, входит ли в неё X.
+        Итого:
+        Проверить сортированность частей. Возможны три варианта:
+        1. левая - да; правая - нет
+        2. левая - нет; правая - да
+        3. левая - да; правая - да
+        Для случаев 1 и 2, если сортированная часть содержит X, передать её
+        в простой бинарный поиск bin_search(), если нет, передать другую,
+        несортированную часть, в bin_brk_search().
+        Для варианта три передать в простой bin_search() ту часть, которая
+        содержит X.
+    """        
     def binary_search(arr, x, left, right) -> int:
-        if right <= left: # промежуток пуст
+        if right == left: # дошли до края
+            if x == arr[right]:
+                return right
             return -1
-        # промежуток не пуст
         mid = (left + right) // 2
-        if arr[mid] == x: # центральный элемент — искомый
-            return arr[mid]
-        elif x < arr[mid]: # искомый элемент меньше центрального
-                        # значит следует искать в левой половине
-            return binary_search(arr, x, left, mid)
-        else: # иначе следует искать в правой половине
+        if arr[mid] == x:
+            return mid
+        elif x < arr[mid]:
+            return binary_search(arr, x, left, mid - 1)
+        else:
             return binary_search(arr, x, mid + 1, right)
 
     def bin_brk_search(arr, x, left, right):
-        arr_len = len(arr)
-        if arr_len < 4:
-            for i in range(arr_len):
-                if arr[i] == x:
-                    return arr[i]
-            return -1
-
-        # center
+        # [сортированность, начало, конец]
+        left_payload: List[bool, int, int] = [False, -1, -1]
+        right_payload: List[bool, bool, int, int] = [False, -1, -1]
+        # середина
         mid = (left + right) // 2
+        if arr[mid] == x:
+            return mid
 
-        if arr[mid] > arr[left]:
-            sorted_half = (left, mid)
-            unsorted_half = (mid + 1, right)
-        else:
-            unsorted_half = (left, mid - 1)
-            sorted_half = (mid, right)
-        if arr[sorted_half[0]] <= x <= arr[sorted_half[1]]:
-            return binary_search(arr, x, sorted_half[0], sorted_half[1])
-        else:
-            return bin_brk_search(arr, x, unsorted_half[0], unsorted_half[1])
+        # левая часть
+        if arr[left] < arr[mid]:
+            left_payload[0] = True
+            if arr[left] < x < arr[mid]:
+                return binary_search(arr, x, left, mid - 1)
+            left_payload[1:] = left, mid - 1
+
+        # правая часть
+        if arr[mid + 1] < arr[right]:
+            right_payload[0] = True
+            if arr[mid + 1] < x < arr[right]:
+                return binary_search(arr, x, left, mid - 1)
+            right_payload[1:] = mid + 1, right
         
-    
-    inspected = nums
-    
-    return bin_brk_search(inspected, target, 0, len(inspected) - 1)
+        # в отсортированные части X не входит
+        if left_payload[0]:
+            left, right = right_payload[1:]
+        else:
+            left, right = left_payload[1:]
+
+        return bin_brk_search(arr, x, left, right)
+
+    return bin_brk_search(nums, target, 0, len(nums) - 1)
 
 def main():
     count_item = int(input())
@@ -54,6 +81,11 @@ def main():
 def test():
     arr = [19, 21, 100, 101, 1, 4, 5, 7, 12]
     assert broken_search(arr, 5) == 6
+    arr = [5, 1]
+    assert broken_search(arr, 1) == 2
+    
+
+
 
 if __name__ == '__main__':
     main()
@@ -61,14 +93,6 @@ if __name__ == '__main__':
 
 
 """
-9
-5
-19 21 100 101 1 4 5 7 12
-
-2
-1
-5 1
-
 8
 3
 1 2 3 5 6 7 9 0
