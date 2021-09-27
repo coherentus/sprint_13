@@ -53,14 +53,14 @@ def broken_search(nums, target) -> int:
         # левая часть
         if arr[left] < arr[mid]:
             left_payload[0] = True
-            if arr[left] < x < arr[mid]:
+            if arr[left] <= x < arr[mid]:
                 return binary_search(arr, x, left, mid - 1)
             left_payload[1:] = left, mid - 1
 
         # правая часть
         if arr[mid] < arr[right]:
             right_payload[0] = True
-            if arr[mid] < x < arr[right]:
+            if arr[mid] < x <= arr[right]:
                 return binary_search(arr, x, mid, right)
             right_payload[1:] = mid, right
         
