@@ -24,19 +24,24 @@ def broken_search(nums, target) -> int:
         содержит X.
     """        
     def binary_search(arr, x, left, right) -> int:
-        if right == left: # дошли до края
-            if x == arr[right]:
-                return right
+        if right <= left: # дошли до края
+            if x == arr[left]:
+                return left
             return -1
         mid = (left + right) // 2
         if arr[mid] == x:
             return mid
         elif x < arr[mid]:
-            return binary_search(arr, x, left, mid - 1)
+            return binary_search(arr, x, left, mid)
         else:
             return binary_search(arr, x, mid + 1, right)
 
     def bin_brk_search(arr, x, left, right):
+        if right - left < 4: # дошли до края
+            for i in range(left, right + 1):
+                if x == arr[i]:
+                    return i
+            return -1
         # [сортированность, начало, конец]
         left_payload: List[bool, int, int] = [False, -1, -1]
         right_payload: List[bool, bool, int, int] = [False, -1, -1]
@@ -53,11 +58,11 @@ def broken_search(nums, target) -> int:
             left_payload[1:] = left, mid - 1
 
         # правая часть
-        if arr[mid + 1] < arr[right]:
+        if arr[mid] < arr[right]:
             right_payload[0] = True
-            if arr[mid + 1] < x < arr[right]:
-                return binary_search(arr, x, left, mid - 1)
-            right_payload[1:] = mid + 1, right
+            if arr[mid] < x < arr[right]:
+                return binary_search(arr, x, mid, right)
+            right_payload[1:] = mid, right
         
         # в отсортированные части X не входит
         if left_payload[0]:
@@ -93,6 +98,11 @@ if __name__ == '__main__':
 
 
 """
+9
+5
+19 21 100 101 1 4 5 7 12
+
+
 8
 3
 1 2 3 5 6 7 9 0
