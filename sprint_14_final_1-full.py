@@ -1,5 +1,5 @@
-# https://contest.yandex.ru/contest/24735/run-report/53590632/
 def broken_search(nums, target) -> int:
+    from typing import List
     """Бинарный поиск в 'сломанном' списке.
 
     Args:
@@ -22,13 +22,8 @@ def broken_search(nums, target) -> int:
         несортированную часть, в bin_brk_search().
         Для варианта три передать в простой bin_search() ту часть, которая
         содержит X.
-    """
-    def binary_search(arr, x, left, right):
-        """Рекурсивный бинарный поиск X в диапазоне массива arr.
-
-        Массив отсортирован по возрастанию.
-        Возвращает индекс эл-та или -1 если не найден.
-        """
+    """        
+    def binary_search(arr, x, left, right) -> int:
         if right <= left: # дошли до края
             if x == arr[left]:
                 return left
@@ -42,18 +37,14 @@ def broken_search(nums, target) -> int:
             return binary_search(arr, x, mid + 1, right)
 
     def bin_brk_search(arr, x, left, right):
-        """Рекурсивный бинарный поиск X в диапазоне массива arr.
-
-        Возвращает индекс эл-та или -1 если не найден.
-        """
         if right - left < 4: # дошли до края
             for i in range(left, right + 1):
                 if x == arr[i]:
                     return i
             return -1
         # [несортированность, начало, конец]
-        left_payload = [True, -1, -1]
-        right_payload = [True, -1, -1]
+        left_payload: List[bool, int, int] = [True, -1, -1]
+        right_payload: List[bool, bool, int, int] = [True, -1, -1]
         # середина
         mid = (left + right) // 2
         if arr[mid] == x:
@@ -85,6 +76,15 @@ def broken_search(nums, target) -> int:
 
     return bin_brk_search(nums, target, 0, len(nums) - 1)
 
+def main():
+    count_item = int(input())
+    find_x = int(input())
+    items = list(map(int, input().split()))
+    
+    result = broken_search(items, find_x)
+    print(result)
+
+
 def test():
     arr = [19, 21, 100, 101, 1, 4, 5, 7, 12]
     assert broken_search(arr, 5) == 6
@@ -100,3 +100,7 @@ def test():
     assert broken_search(arr, 8) == -1
     arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0]
     assert broken_search(arr, 1) == 0
+    
+if __name__ == '__main__':
+    main()
+
