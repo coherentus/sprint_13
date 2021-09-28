@@ -29,7 +29,7 @@ def broken_search(nums, target) -> int:
         Массив отсортирован по возрастанию.
         Возвращает индекс эл-та или -1 если не найден.
         """
-        if right <= left: # дошли до края
+        if right <= left:  # дошли до края
             if x == arr[left]:
                 return left
             return -1
@@ -46,7 +46,7 @@ def broken_search(nums, target) -> int:
 
         Возвращает индекс эл-та или -1 если не найден.
         """
-        if right - left < 4: # дошли до края
+        if right - left < 4:  # дошли до края
             for i in range(left, right + 1):
                 if x == arr[i]:
                     return i
@@ -64,7 +64,7 @@ def broken_search(nums, target) -> int:
             left_payload[0] = False
             if arr[left] <= x <= arr[mid]:
                 return binary_search(arr, x, left, mid)
-        else:            
+        else:
             left_payload[1:] = left, mid
 
         # правая часть
@@ -74,7 +74,7 @@ def broken_search(nums, target) -> int:
                 return binary_search(arr, x, mid + 1, right)
         else:
             right_payload[1:] = mid + 1, right
-        
+
         # в отсортированные части X не входит
         if left_payload[0]:
             left, right = left_payload[1:]
@@ -84,6 +84,7 @@ def broken_search(nums, target) -> int:
         return bin_brk_search(arr, x, left, right)
 
     return bin_brk_search(nums, target, 0, len(nums) - 1)
+
 
 def test():
     arr = [19, 21, 100, 101, 1, 4, 5, 7, 12]
