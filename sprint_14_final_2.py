@@ -1,4 +1,4 @@
-# https://contest.yandex.ru/contest/24735/run-report/53703676/
+# https://contest.yandex.ru/contest/24735/run-report/53740093/
 def qsort(arr, left, right):
     """Сортировка массива по трём составлющим 'на месте'.
 
@@ -46,10 +46,10 @@ def main():
     for i in range(count_line):
         name, points, penalty = input().split()
         # формирование массива для удобства сравнения
-        persons[i] = [-int(points), int(penalty), name]
+        persons[i] = (-int(points), int(penalty), name)
 
     result = get_order(persons)
-    print('\n'.join(result))
+    print(*result, sep = "\n")
 
 
 if __name__ == '__main__':
