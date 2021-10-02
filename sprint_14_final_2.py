@@ -49,7 +49,7 @@ def main():
         persons[i] = (-int(points), int(penalty), name)
 
     result = get_order(persons)
-    print(*result, sep = "\n")
+    print(*result, sep='\n')
 
 
 if __name__ == '__main__':
