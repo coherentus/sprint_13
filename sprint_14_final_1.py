@@ -1,4 +1,4 @@
-# https://contest.yandex.ru/contest/24735/run-report/53706565/
+# https://contest.yandex.ru/contest/24735/run-report/53783569/
 def broken_search(nums, target) -> int:
     """Бинарный поиск в 'сломанном' списке.
 
@@ -27,24 +27,25 @@ def broken_search(nums, target) -> int:
         иначе:
             индексы левой для след. итерации
     след. итерация
+    При сужении диапазона до двух эл-тов, проверка на сортированность
+    сравнивает один и тот же эл-т с собой. В условии необходимо '='.
     """
     left, right = 0, len(nums) - 1
 
-    while True:
+    while left <= right:
         mid = (left + right) // 2
         if nums[mid] == target:
             return mid
-        if left == right:
-            return -1
 
         # левая часть
-        if nums[left] < nums[mid]:
+        if nums[left] <= nums[mid]:
             if nums[left] <= target < nums[mid]:
-                right = mid
+                right = mid - 1
             else:
                 left = mid + 1
         else:  # правая часть
-            if nums[mid + 1] <= target <= nums[right]:
+            if nums[mid] < target <= nums[right]:
                 left = mid + 1
             else:
-                right = mid
+                right = mid - 1
+    return -1
