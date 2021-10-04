@@ -1,26 +1,24 @@
 def merge(arr, lf, mid, rg):
     # left, mid; mid + 1, right
     result = list()
-    first = arr[lf: mid + 1]
-    second = arr[mid + 1: rg + 1]
+    first = arr[lf: mid]
+    second = arr[mid: rg]
     while first and second:
         result.append(
             first.pop(0) if first[0] < second[0] else second.pop(0)
         )
     if first or second:
         result.extend(first if first else second)
-        return result
+    return result
 
 
 def merge_sort(arr, lf, rg):
-    # Your code
-    # “ヽ(´▽｀)ノ”
     if rg - lf <= 1:
         return
     mid = (lf + rg) // 2
     merge_sort(arr, lf, mid)
     merge_sort(arr, mid, rg)
-    arr[:] = [*merge(arr, lf, mid, rg)]
+    arr[lf: rg] = merge(arr, lf, mid, rg)
 
 
 def test():
@@ -35,7 +33,7 @@ def test():
 
 
 def main():
-    count = int(input())
+    _ = int(input())
     array = list(map(int, input().split()))
     merge_sort(array, 0, len(array) - 1)
     print(array)
@@ -43,3 +41,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+"""4
+-6 -12 -14 14"""
