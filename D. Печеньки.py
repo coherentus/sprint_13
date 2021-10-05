@@ -3,24 +3,23 @@ def check(zhadn, sizes):
         cur_size = sizes.pop(0)
         if cur_size >= zhadn:
             return True
-    return False    
+    return False
 
 
 def main():
-    count_chldrn = int(input())
+    _ = int(input())
     f_zh = list(map(int, input().split()))
-    count_coocie = int(input())
+    _ = int(input())
     sizes = list(map(int, input().split()))
 
     f_zh.sort()
     sizes.sort()
 
     count = 0
-    idx = 0
     for zh in f_zh:
         if check(zh, sizes):
             count += 1
-    
+
     print(count)
 
 
