@@ -34,7 +34,6 @@ def sort_arr(arr):
 
 def max_glue_num(arr, lenght):
     """Отсортировать, склеить и отдать."""
-    left, right = 0, lenght - 1
     result = sort_arr(arr)
     return ''.join(result)
 
